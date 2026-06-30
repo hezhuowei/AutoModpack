@@ -31,6 +31,11 @@ public class Jsons {
         public boolean syncLoaderVersion = true;
         public boolean playMusic = true;
         public boolean allowRemoteNonModpackDeletions = true;
+        /** When true, skip Modrinth/CurseForge CDN and download mod/shader/resourcepack
+         *  files directly from the game server's internal protocol instead.
+         *  Useful for users behind restrictive networks or in regions with poor
+         *  access to third-party platforms. */
+        public boolean preferHostDownload = true;
     }
 
     public static class ModpackAddresses {

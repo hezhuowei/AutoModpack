@@ -218,26 +218,32 @@ public class ModpackUpdater {
 
             // FETCH
             long startFetching = System.currentTimeMillis();
-            List<FetchManager.FetchData> fetchDatas = new ArrayList<>();
-
-            for (Jsons.ModpackContentFields.ModpackContentItem serverItem : finalFilesToUpdate) {
-
-                totalBytesToDownload += Long.parseLong(serverItem.size);
-                String fileType = serverItem.type;
-
-                // Check if the file is mod, shaderpack or resourcepack is available to download from modrinth or curseforge
-                if (fileType.equals("mod") || fileType.equals("shader") || fileType.equals("resourcepack")) {
-                    fetchDatas.add(new FetchManager.FetchData(serverItem.file, serverItem.sha1, serverItem.murmur, serverItem.size, fileType));
-                }
-            }
 
             FetchManager fetchManager = null;
 
-            if (!fetchDatas.isEmpty()) {
-                fetchManager = new FetchManager(fetchDatas);
-                new ScreenManager().fetch(fetchManager);
-                fetchManager.fetch();
-                LOGGER.info("Finished fetching urls in {}ms", System.currentTimeMillis() - startFetching);
+            if (clientConfig.preferHostDownload) {
+                LOGGER.info("preferHostDownload enabled, skipping Modrinth/CurseForge fetch, " +
+                        "downloading directly from the game server");
+            } else {
+                List<FetchManager.FetchData> fetchDatas = new ArrayList<>();
+
+                for (Jsons.ModpackContentFields.ModpackContentItem serverItem : finalFilesToUpdate) {
+
+                    totalBytesToDownload += Long.parseLong(serverItem.size);
+                    String fileType = serverItem.type;
+
+                    // Check if the file is mod, shaderpack or resourcepack is available to download from modrinth or curseforge
+                    if (fileType.equals("mod") || fileType.equals("shader") || fileType.equals("resourcepack")) {
+                        fetchDatas.add(new FetchManager.FetchData(serverItem.file, serverItem.sha1, serverItem.murmur, serverItem.size, fileType));
+                    }
+                }
+
+                if (!fetchDatas.isEmpty()) {
+                    fetchManager = new FetchManager(fetchDatas);
+                    new ScreenManager().fetch(fetchManager);
+                    fetchManager.fetch();
+                    LOGGER.info("Finished fetching urls in {}ms", System.currentTimeMillis() - startFetching);
+                }
             }
 
             // DOWNLOAD
