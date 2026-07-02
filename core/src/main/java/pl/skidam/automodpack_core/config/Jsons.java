@@ -25,9 +25,9 @@ public class Jsons {
         public int DO_NOT_CHANGE_IT = 2; // file version
         public String selectedModpack = ""; // modpack name
         public Map<String, ModpackAddresses> installedModpacks; // modpack name, <modpack host address, minecraft server address>
-        public boolean updateSelectedModpackOnLaunch = true;
+        public boolean updateSelectedModpackOnLaunch = false;
         public boolean selfUpdater = false;
-        public boolean syncAutoModpackVersion = true;
+        public boolean syncAutoModpackVersion = false;
         public boolean syncLoaderVersion = true;
         public boolean playMusic = true;
         public boolean allowRemoteNonModpackDeletions = true;
